@@ -1,48 +1,76 @@
 const ptp = require('pdf-to-printer');
 
-function listPrinters() {
-  function onSuccess(data) {
-    console.log('Printers: ', data);
-  }
+function getListPrinters() {
+	// Retorna a lista de impressoras
 
-  function onError(error) {
-    console.log('Error: ', error);
-  }
+	function onSuccess(data) {
+		console.log('Printers: ', data);
+		return data;
+	}
 
-  ptp
-    .getPrinters()
-    .then(onSuccess)
-    .catch(onError);
+	function onError(error) {
+		console.log('Error: ', error);
+	}
+
+	ptp
+	 .getPrinters()
+	 .then(onSuccess)
+	 .catch(onError);
+}
+
+function getDefaultPrinter() {
+	// Retorna a impressora padrão
+
+	function onSuccess(data) {
+		console.log('Printer Default: ', data);
+		return data;
+	}
+
+	function onError(error) {
+		console.log('Error: ', error);
+	}
+
+	ptp
+	 .getDefaultPrinter()
+	 .then(onSuccess)
+	 .catch(onError);
+}
+
+function sendToPrinter(file, printerName="") {
+	// Envia para fila de impressão, na impressora padrão ou em outra especificada
+
+	function onSuccess(data) {
+		console.log('Documento enviado para impressão!', data);
+	}
+
+	function onError(error) {
+		console.log('Error: ', error);
+	}
+
+	const options = printerName.length > 0 ? {printer: printerName}: {};
+
+	ptp
+	 .print(file, options)
+	 .then(onSuccess)
+	 .catch(onError);
 }
 
 console.log('Iniciando');
 
 console.log('Requisitando lista de impressoras...');
 
-ptp
-  .getPrinters()
-  .then((data) => {
-  	console.log('Printers: ', data);
-  })
-  .catch(( error ) => {
-  	console.error('Erro ao requisitar impressoras: ', error);
-  });
+let impressoras = getListPrinters();
 
 console.log('Requisitando impressora padrão...');
 
-ptp
-  .getDefaultPrinter()
-  .then((data) => {
-  	console.log('Impressora: ', data);
-  })
-  .catch(( error ) => {
-  	console.error('Erro ao requisitar impressora: ', error);
-  });
+let impressoraPadrao = getDefaultPrinter();
 
-console.log('test');
-listPrinters();
+console.log('Preparando para impressão...');
 
-// console.log('Preparando para impressão...');
+sendToPrinter("./src/assets/pdf_exemplo.pdf", "Deskjet Series 1234");
+
+console.log(impressoras);
+console.log(impressoraPadrao);
 
 // ptp
 //   .print("./src/assets/pdf_exemplo.pdf")
