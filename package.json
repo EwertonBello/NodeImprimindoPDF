@@ -1,0 +1,14 @@
+{
+  "name": "imprimindopdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "pdf-to-printer": "^1.5.2"
+  },
+  "devDependencies": {}
+}
